@@ -11,6 +11,8 @@
   <title>SerCafé - Café Molido de Nariño</title>
   <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <style>
 :root {
   --background: hsl(280, 27%, 97%);
@@ -248,6 +250,9 @@ body {
                 <div class="swiper-slide"><img src="https://i.postimg.cc/sDqXmzC6/250-pagina-web-04.png" class="object-cover w-full h-full" /></div>
                 <div class="swiper-slide"><img src="URL_FOTO1C" class="object-cover w-full h-full" /></div>
               </div>
+              <div class="swiper-pagination"></div>
+              <div class="swiper-button-prev"></div>
+              <div class="swiper-button-next"></div>
             </div>
           </div>
           <h3 class="mt-4 text-xl font-bold text-purple-800">SerCafé 500g</h3>
@@ -265,6 +270,9 @@ body {
                 <div class="swiper-slide"><img src="URL_FOTO2C" class="object-cover w-full h-full" /></div>
               </div>
             </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
           </div>
           <h3 class="mt-4 text-xl font-bold text-purple-800">SerCafé 250g</h3>
           <p class="mt-2 text-gray-700">La opción perfecta para quienes buscan frescura y aroma en una porción más práctica.</p>
@@ -295,5 +303,28 @@ body {
       </div>
     </div>
   </footer>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Inicializa todos los swipers
+    const swipers = document.querySelectorAll('.swiper');
+    swipers.forEach((swiperEl, index) => {
+      new Swiper(swiperEl, {
+        loop: true,
+        autoplay: {
+          delay: 3000,
+          disableOnInteraction: false,
+        },
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+      });
+    });
+  });
+</script>
 </body>
 </html>
