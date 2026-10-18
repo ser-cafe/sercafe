@@ -15,8 +15,8 @@ const perfilesVariedad = {
             { nombre: "Caramelo", icono: "🍮" }
         ],
         tostion: 3,
-        acidez: 4,
-        complejidad: 3
+        acidez: 5,
+        complejidad: 4
     },
 
     "Chiroso": {
@@ -24,13 +24,13 @@ const perfilesVariedad = {
         altura: "1.950 msnm",
         proceso: "Lavado",
         notas: [
+            { nombre: "Limoncillo", icono: "🌿" },
             { nombre: "Naranja", icono: "🍊" },
-            { nombre: "Durazno", icono: "🍑" },
-            { nombre: "Miel", icono: "🍯" }
+            { nombre: "Durazno", icono: "🍑" }
         ],
         tostion: 3,
-        acidez: 5,
-        complejidad: 4
+        acidez: 4,
+        complejidad: 5
     },
 
     "Catimor": {
@@ -38,13 +38,13 @@ const perfilesVariedad = {
         altura: "1.950 msnm",
         proceso: "Lavado",
         notas: [
-            { nombre: "Cacao", icono: "🍫" },
-            { nombre: "Nuez", icono: "🌰" },
-            { nombre: "Frutos secos", icono: "🥜" }
+            { nombre: "Frutos morados", icono: "🍇" },
+            { nombre: "Caramelo", icono: "🍮" },
+            { nombre: "Madarina", icono: "🍊" }
         ],
-        tostion: 4,
+        tostion: 3,
         acidez: 3,
-        complejidad: 3
+        complejidad: 4
     }
 
 };
@@ -56,33 +56,21 @@ const productos = [
         nombre: "Castillo Sur",
         presentacion: 250,
         precio: 23000,
-<<<<<<< HEAD
         imagen: "Img/CS-250gr.png"
-=======
-        imagen: "Img/250gr.png"
->>>>>>> 62cb1d823b81f3574816934a0143a5734d84331a
     },
     {
         id: 2,
         nombre: "Castillo Sur",
         presentacion: 500,
         precio: 42000,
-<<<<<<< HEAD
         imagen: "Img/CS-500gr.png"
-=======
-        imagen: "Img/500gr.png"
->>>>>>> 62cb1d823b81f3574816934a0143a5734d84331a
     },
     {
         id: 3,
         nombre: "Castillo Sur",
         presentacion: 2500,
         precio: 189900,
-<<<<<<< HEAD
         imagen: "Img/CS-2500gr.png"
-=======
-        imagen: "Img/2500gr.png"
->>>>>>> 62cb1d823b81f3574816934a0143a5734d84331a
     },
 
     {
@@ -90,33 +78,21 @@ const productos = [
         nombre: "Chiroso",
         presentacion: 250,
         precio: 32000,
-<<<<<<< HEAD
         imagen: "Img/CH-250gr.png"
-=======
-        imagen: "Img/250gr.png"
->>>>>>> 62cb1d823b81f3574816934a0143a5734d84331a
     },
     {
         id: 5,
         nombre: "Chiroso",
         presentacion: 500,
         precio: 59000,
-<<<<<<< HEAD
         imagen: "Img/CH-500gr.png"
-=======
-        imagen: "Img/500gr.png"
->>>>>>> 62cb1d823b81f3574816934a0143a5734d84331a
     },
     {
         id: 6,
         nombre: "Chiroso",
         presentacion: 2500,
         precio: 247500,
-<<<<<<< HEAD
         imagen: "Img/CH-2500gr.png"
-=======
-        imagen: "Img/2500gr.png"
->>>>>>> 62cb1d823b81f3574816934a0143a5734d84331a
     },
 
     {
@@ -124,33 +100,21 @@ const productos = [
         nombre: "Catimor",
         presentacion: 250,
         precio: 27500,
-<<<<<<< HEAD
         imagen: "Img/CT-250gr.png"
-=======
-        imagen: "Img/250gr.png"
->>>>>>> 62cb1d823b81f3574816934a0143a5734d84331a
     },
     {
         id: 8,
         nombre: "Catimor",
         presentacion: 500,
         precio: 49900,
-<<<<<<< HEAD
         imagen: "Img/CT-500gr.png"
-=======
-        imagen: "Img/500gr.png"
->>>>>>> 62cb1d823b81f3574816934a0143a5734d84331a
     },
     {
         id: 9,
         nombre: "Catimor",
         presentacion: 2500,
         precio: 215000,
-<<<<<<< HEAD
         imagen: "Img/CT-2500gr.png"
-=======
-        imagen: "Img/2500gr.png"
->>>>>>> 62cb1d823b81f3574816934a0143a5734d84331a
     }
 
 ];
