@@ -15,8 +15,8 @@ const perfilesVariedad = {
             { nombre: "Caramelo", icono: "🍮" }
         ],
         tostion: 3,
-        acidez: 4,
-        complejidad: 3
+        acidez: 5,
+        complejidad: 4
     },
 
     "Chiroso": {
@@ -24,13 +24,13 @@ const perfilesVariedad = {
         altura: "1.950 msnm",
         proceso: "Lavado",
         notas: [
+            { nombre: "Limoncillo", icono: "🌿" },
             { nombre: "Naranja", icono: "🍊" },
-            { nombre: "Durazno", icono: "🍑" },
-            { nombre: "Miel", icono: "🍯" }
+            { nombre: "Durazno", icono: "🍑" }
         ],
         tostion: 3,
-        acidez: 5,
-        complejidad: 4
+        acidez: 4,
+        complejidad: 5
     },
 
     "Catimor": {
@@ -38,13 +38,13 @@ const perfilesVariedad = {
         altura: "1.950 msnm",
         proceso: "Lavado",
         notas: [
-            { nombre: "Cacao", icono: "🍫" },
-            { nombre: "Nuez", icono: "🌰" },
-            { nombre: "Frutos secos", icono: "🥜" }
+            { nombre: "Frutos morados", icono: "🍇" },
+            { nombre: "Caramelo", icono: "🍮" },
+            { nombre: "Madarina", icono: "🍊" }
         ],
-        tostion: 4,
+        tostion: 3,
         acidez: 3,
-        complejidad: 3
+        complejidad: 4
     }
 
 };
@@ -56,33 +56,21 @@ const productos = [
         nombre: "Castillo Sur",
         presentacion: 250,
         precio: 23000,
-<<<<<<< HEAD
         imagen: "Img/CS-250gr.png"
-=======
-        imagen: "Img/250gr.png"
->>>>>>> 62cb1d823b81f3574816934a0143a5734d84331a
     },
     {
         id: 2,
         nombre: "Castillo Sur",
         presentacion: 500,
         precio: 42000,
-<<<<<<< HEAD
         imagen: "Img/CS-500gr.png"
-=======
-        imagen: "Img/500gr.png"
->>>>>>> 62cb1d823b81f3574816934a0143a5734d84331a
     },
     {
         id: 3,
         nombre: "Castillo Sur",
         presentacion: 2500,
         precio: 189900,
-<<<<<<< HEAD
         imagen: "Img/CS-2500gr.png"
-=======
-        imagen: "Img/2500gr.png"
->>>>>>> 62cb1d823b81f3574816934a0143a5734d84331a
     },
 
     {
@@ -90,33 +78,21 @@ const productos = [
         nombre: "Chiroso",
         presentacion: 250,
         precio: 32000,
-<<<<<<< HEAD
         imagen: "Img/CH-250gr.png"
-=======
-        imagen: "Img/250gr.png"
->>>>>>> 62cb1d823b81f3574816934a0143a5734d84331a
     },
     {
         id: 5,
         nombre: "Chiroso",
         presentacion: 500,
         precio: 59000,
-<<<<<<< HEAD
         imagen: "Img/CH-500gr.png"
-=======
-        imagen: "Img/500gr.png"
->>>>>>> 62cb1d823b81f3574816934a0143a5734d84331a
     },
     {
         id: 6,
         nombre: "Chiroso",
         presentacion: 2500,
         precio: 247500,
-<<<<<<< HEAD
         imagen: "Img/CH-2500gr.png"
-=======
-        imagen: "Img/2500gr.png"
->>>>>>> 62cb1d823b81f3574816934a0143a5734d84331a
     },
 
     {
@@ -124,33 +100,21 @@ const productos = [
         nombre: "Catimor",
         presentacion: 250,
         precio: 27500,
-<<<<<<< HEAD
         imagen: "Img/CT-250gr.png"
-=======
-        imagen: "Img/250gr.png"
->>>>>>> 62cb1d823b81f3574816934a0143a5734d84331a
     },
     {
         id: 8,
         nombre: "Catimor",
         presentacion: 500,
         precio: 49900,
-<<<<<<< HEAD
         imagen: "Img/CT-500gr.png"
-=======
-        imagen: "Img/500gr.png"
->>>>>>> 62cb1d823b81f3574816934a0143a5734d84331a
     },
     {
         id: 9,
         nombre: "Catimor",
         presentacion: 2500,
         precio: 215000,
-<<<<<<< HEAD
         imagen: "Img/CT-2500gr.png"
-=======
-        imagen: "Img/2500gr.png"
->>>>>>> 62cb1d823b81f3574816934a0143a5734d84331a
     }
 
 ];
@@ -668,6 +632,8 @@ function renderCarrito() {
                 <img
                     src="${item.imagen}"
                     class="img-carrito"
+                    loading="lazy"
+                    decoding="async"
                     onerror="this.onerror=null;this.src='Img/logoSC-10.png';">
 
                 <div class="info-carrito">
@@ -945,6 +911,11 @@ function calcularKilosFacturables() {
 // =========================
 
 function calcularEnvio() {
+
+    // Sin productos en el carrito no hay envío que cobrar.
+    if (carrito.length === 0) {
+        return 0;
+    }
 
     const departamento =
         document.getElementById(
@@ -1226,6 +1197,26 @@ function generarBotonPago() {
     const detalle =
         construirDetallePedido();
 
+    // Datos del cliente (para la página de gracias y Enhanced Conversions).
+    const cliente = obtenerDatosCliente();
+
+    // Guardamos una copia del pedido para mostrarlo en la página de gracias
+    // (la respuesta de ePayco no devuelve el detalle de los productos ni
+    //  los datos del comprador).
+    try {
+        localStorage.setItem(
+            "ultimoPedido",
+            JSON.stringify({
+                referencia: referencia,
+                descripcion: descripcion,
+                detalle: JSON.parse(detalle),
+                cliente: cliente
+            })
+        );
+    } catch (e) {
+        // Si localStorage falla, simplemente no mostramos el resumen.
+    }
+
     const script =
         document.createElement(
             "script"
@@ -1299,10 +1290,10 @@ function generarBotonPago() {
         "false"
     );
 
-    // URL de respuesta
+    // URL de respuesta -> página de gracias
     script.setAttribute(
         "data-epayco-response",
-        "https://ser-cafe.com/#details"
+        "https://ser-cafe.com/gracias.html"
     );
 
     // URL confirmación
@@ -1315,6 +1306,17 @@ function generarBotonPago() {
         "data-epayco-button",
         "https://multimedia.epayco.co/dashboard/btns/btn2.png"
     );
+
+    // Datos de facturación del cliente (pre-llenan el checkout de ePayco)
+    if (cliente.email) {
+        script.setAttribute("data-epayco-email_billing", cliente.email);
+    }
+    if (cliente.nombre) {
+        script.setAttribute("data-epayco-name_billing", cliente.nombre);
+    }
+    if (cliente.telefono) {
+        script.setAttribute("data-epayco-mobilephone_billing", cliente.telefono);
+    }
 
     // Información adicional
 
@@ -1338,3 +1340,51 @@ function generarBotonPago() {
     );
 
 }
+
+
+// =========================
+// DATOS DEL CLIENTE
+// =========================
+
+function obtenerDatosCliente() {
+
+    const nombreEl = document.getElementById("clienteNombre");
+    const emailEl = document.getElementById("clienteEmail");
+    const telEl = document.getElementById("clienteTelefono");
+
+    return {
+        nombre: nombreEl ? nombreEl.value.trim() : "",
+        email: emailEl ? emailEl.value.trim() : "",
+        telefono: telEl ? telEl.value.trim() : ""
+    };
+
+}
+
+// =========================
+// CONSENTIMIENTO DE DATOS
+// =========================
+
+function guardarConsentimiento() {
+
+    const check = document.getElementById("consentDatos");
+
+    try {
+        localStorage.setItem(
+            "sercafe_consent",
+            check && check.checked ? "si" : "no"
+        );
+    } catch (e) {
+        // localStorage no disponible
+    }
+
+}
+
+// Al cargar la tienda, reflejar el consentimiento previamente guardado.
+document.addEventListener("DOMContentLoaded", () => {
+    const check = document.getElementById("consentDatos");
+    if (check) {
+        try {
+            check.checked = localStorage.getItem("sercafe_consent") === "si";
+        } catch (e) { /* no-op */ }
+    }
+});
