@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacto - SerCafé</title>
+  <meta name="description" content="Contáctanos para más información sobre nuestros productos.">
+  
+  <!-- Favicon y CSS -->
+  <link rel="icon" href="assets/images/logo.png" type="image/png">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <!-- Header (igual que index.html) -->
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="index.html">
+        <img src="assets/images/logo-full.png" alt="SerCafé" class="logo">
+      </a>
+      
+      <nav class="nav-menu">
+        <ul class="flex items-center space-x-6">
+          <li><a href="index.html" class="nav-link">Inicio</a></li>
+          <li><a href="about.html" class="nav-link">Nosotros</a></li>
+          <li><a href="history.html" class="nav-link active">Historia</a></li>
+          <li><a href="products.html" class="nav-link">Productos</a></li>
+          <li><a href="contact.html" class="nav-link">Contacto</a></li>
+        </ul>
+      </nav>
+      
+      <a href="https://wa.me/573145825227" class="btn">
+        <i class="fas fa-mug-hot mr-2"></i> Comprar
+      </a>
+    </div>
+  </header>
+  
+  <main class="section">
+    <div class="container">
+        <div>
+          <h1 class="section-title">Contáctanos</h1>
+          <h2 class="text-2xl font-bold mb-4">Escríbenos</h2>
+          <form class="space-y-4">
+            <div>
+              <label for="name" class="block mb-1">Nombre</label>
+              <input type="text" id="name" class="w-full px-4 py-2 border rounded-lg">
+            </div>
+            <div>
+              <label for="email" class="block mb-1">Correo electrónico</label>
+              <input type="email" id="email" class="w-full px-4 py-2 border rounded-lg">
+            </div>
+            <div>
+              <label for="message" class="block mb-1">Mensaje</label>
+              <textarea id="message" rows="4" class="w-full px-4 py-2 border rounded-lg"></textarea>
+            </div>
+            <button type="submit" class="btn">
+              <i class="fas fa-paper-plane mr-2"></i> Enviar mensaje
+            </button>
+          </form>
+        </div>
+        
+        <div>
+          <h2 class="text-2xl font-bold mb-4">Información de contacto</h2>
+          <div class="space-y-4">
+            <div class="flex items-start gap-4">
+              <div class="text-purple-700 mt-1">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <div>
+                <h3 class="font-bold">Ubicación</h3>
+                <p class="text-gray-600">Finca Lucitania, La Florida, Nariño, Colombia</p>
+              </div>
+            </div>
+            <!-- Más información de contacto -->
+          </div>
+          
+          <div class="mt-8">
+            <h3 class="text-xl font-bold mb-4">Síguenos</h3>
+            <div class="flex space-x-4">
+              <a href="#" class="text-purple-700 hover:text-purple-900 text-2xl">
+                <i class="fab fa-facebook"></i>
+              </a>
+              <a href="#" class="text-purple-700 hover:text-purple-900 text-2xl">
+                <i class="fab fa-instagram"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+    </div>
+  </main>
+  
+  <!-- Footer (igual que index.html) -->
+  <footer class="site-footer">
+    <div class="container2">
+      <div class="container1">
+        <div class="logofooter">
+          <img src="assets/images/logo.png" alt="SerCafé" class="logo">
+        </div>
+        <div class="flex1">
+          <a href="https://www.facebook.com/share/1CqqQzW2PM/" target="_blank" rel="noopener noreferrer" class="text-purple-700 hover:text-purple-900">
+            <i class="fab fa-facebook-f fa-lg"></i>
+          </a>
+          <a href="https://www.instagram.com/sercafe_/" target="_blank" rel="noopener noreferrer" class="text-purple-700 hover:text-purple-900">
+            <i class="fab fa-instagram fa-lg"></i>
+          </a>
+        </div>
+      </div>
+      <div class="footerabajo">
+        <p class="text1">&copy; 2023 SerCafé. Todos los derechos reservados.</p>
+        <p class="text2">Municipio de La Florida, Colombia</p>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- Scripts -->
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
