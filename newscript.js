@@ -632,6 +632,8 @@ function renderCarrito() {
                 <img
                     src="${item.imagen}"
                     class="img-carrito"
+                    loading="lazy"
+                    decoding="async"
                     onerror="this.onerror=null;this.src='Img/logoSC-10.png';">
 
                 <div class="info-carrito">
@@ -909,6 +911,11 @@ function calcularKilosFacturables() {
 // =========================
 
 function calcularEnvio() {
+
+    // Sin productos en el carrito no hay envío que cobrar.
+    if (carrito.length === 0) {
+        return 0;
+    }
 
     const departamento =
         document.getElementById(
@@ -1190,6 +1197,21 @@ function generarBotonPago() {
     const detalle =
         construirDetallePedido();
 
+    // Guardamos una copia del pedido para mostrarlo en la página de gracias
+    // (la respuesta de ePayco no devuelve el detalle de los productos).
+    try {
+        localStorage.setItem(
+            "ultimoPedido",
+            JSON.stringify({
+                referencia: referencia,
+                descripcion: descripcion,
+                detalle: JSON.parse(detalle)
+            })
+        );
+    } catch (e) {
+        // Si localStorage falla, simplemente no mostramos el resumen.
+    }
+
     const script =
         document.createElement(
             "script"
@@ -1263,10 +1285,10 @@ function generarBotonPago() {
         "false"
     );
 
-    // URL de respuesta
+    // URL de respuesta -> página de gracias
     script.setAttribute(
         "data-epayco-response",
-        "https://ser-cafe.com/#details"
+        "https://ser-cafe.com/gracias.html"
     );
 
     // URL confirmación
