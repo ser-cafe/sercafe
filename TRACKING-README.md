@@ -128,20 +128,34 @@ Google Ads** SOLO desde el servidor (Apps Script). En GTM, la etiqueta GA4
 Ads si ya la subes por servidor.
 
 ### Configurar el Apps Script de ePayco (`apps-script-epayco.gs`)
-1. Pega el código en el proyecto Apps Script cuya URL `/exec` ya usas en
-   `data-epayco-confirmation` (dentro de `newscript.js`).
-   > Puedes tenerlo en el **mismo** proyecto que el formulario de contacto
-   > (`apps-script-contacto.gs`) o en uno separado; si es el mismo, renombra las
-   > funciones `doPost/doGet` para que no choquen, o únelas en un solo `doPost`
-   > que decida según los parámetros recibidos.
-2. Completa `CONFIG`: hoja de ventas, llaves de ePayco (para validar la firma) y,
-   cuando tengas la API de Google Ads lista, el bloque `GOOGLE_ADS`.
+Este archivo es la **versión extendida de tu script actual**. Mantiene tu lógica
+(Lock, Logs, Pedidos, número de pedido `SC...`, correos) y corrige/añade cosas.
+
+1. En tu proyecto Apps Script de confirmación, reemplaza tu `doPost` y
+   `generarNumeroPedido` por los de este archivo. **Conserva tus funciones
+   `enviarCorreoCliente()` y `enviarCorreoSerCafe()`** (no las incluí para no
+   sobrescribirlas).
+2. Ejecuta **una vez** `guardarSecretos()` desde el editor para guardar las
+   credenciales en `PropertiesService`; luego borra los valores del código.
 3. Implementa una **versión nueva** (Ejecutar como: Yo · Acceso: Cualquiera).
-4. Mientras `GOOGLE_ADS.activo = false`, toda venta aprobada se guarda en la hoja
-   **"Ventas"**. Puedes subir esas conversiones a Google Ads manualmente
-   (importación de conversiones offline con datos de cliente) desde esa hoja.
-5. Al poner `GOOGLE_ADS.activo = true` con las credenciales OAuth + developer
-   token, cada compra aprobada sube la Enhanced Conversion **en tiempo real**.
+4. Mientras `ADS_ACTIVO = "false"`, toda venta aprobada se guarda en la hoja
+   **"Pedidos"** (como ya hacías). Puedes subir esas conversiones a Google Ads
+   manualmente (importación de conversiones offline con datos de cliente).
+5. Al poner `ADS_ACTIVO = "true"` con las credenciales OAuth + developer token,
+   cada compra aprobada sube la Enhanced Conversion a Google Ads **en tiempo real**.
+
+#### Correcciones y mejoras aplicadas sobre tu script
+- 🐛 **Detalle del pedido:** tu código parseaba `x_description` (texto plano),
+  por eso las columnas de molienda/tamaño/total quedaban vacías. El JSON real
+  del pedido viaja en **`x_extra1`**; ahora se lee de ahí. Como hay varios
+  productos, se guarda un resumen de moliendas y tamaños.
+- 🔒 **Firma:** ePayco usa **MD5** (tu código ya lo hacía bien). Se mantiene.
+- 🔑 **Credenciales fuera del código:** `p_key` y las de Google Ads se leen de
+  `PropertiesService`, no se escriben en el archivo.
+
+> ⚠️ **Seguridad urgente:** tu `p_key` de ePayco quedó visible en el chat.
+> **Rótala** en el panel de ePayco (Integraciones) y guarda la nueva con
+> `guardarSecretos()`.
 
 ### ¿Y los datos que capturamos en el carrito?
 Siguen siendo útiles: pre-llenan el checkout de ePayco y se guardan en
