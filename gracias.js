@@ -149,6 +149,48 @@
     }
 
     // =========================================================
+    // CONVERSIÓN DE COMPRA (Google Ads / GA4)
+    // Solo se dispara una vez por transacción y si el pago fue aceptado.
+    // =========================================================
+    if (estadoAceptado && pedido && pedido.detalle) {
+
+        var transId = referenciaFinal || pedido.referencia || "";
+        var yaEnviado = false;
+        try {
+            yaEnviado = localStorage.getItem("purchase_enviado_" + transId) === "1";
+        } catch (e) { yaEnviado = false; }
+
+        if (!yaEnviado && typeof window.trackPurchase === "function") {
+
+            var d = pedido.detalle;
+            var items = (d.productos || []).map(function (p) {
+                return {
+                    item_id: String(p.id),
+                    item_name: p.nombre + " " + p.presentacion + "g",
+                    item_variant: p.molienda,
+                    price: p.precio,
+                    quantity: p.cantidad
+                };
+            });
+
+            window.trackPurchase(
+                {
+                    transaction_id: transId,
+                    value: d.total,
+                    shipping: d.envio,
+                    currency: "COP",
+                    items: items
+                },
+                pedido.cliente || null
+            );
+
+            try {
+                localStorage.setItem("purchase_enviado_" + transId, "1");
+            } catch (e) { /* no-op */ }
+        }
+    }
+
+    // =========================================================
     // LIMPIAR EL CARRITO TRAS UNA COMPRA ACEPTADA
     // =========================================================
     if (estadoAceptado) {

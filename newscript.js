@@ -1197,15 +1197,20 @@ function generarBotonPago() {
     const detalle =
         construirDetallePedido();
 
+    // Datos del cliente (para la página de gracias y Enhanced Conversions).
+    const cliente = obtenerDatosCliente();
+
     // Guardamos una copia del pedido para mostrarlo en la página de gracias
-    // (la respuesta de ePayco no devuelve el detalle de los productos).
+    // (la respuesta de ePayco no devuelve el detalle de los productos ni
+    //  los datos del comprador).
     try {
         localStorage.setItem(
             "ultimoPedido",
             JSON.stringify({
                 referencia: referencia,
                 descripcion: descripcion,
-                detalle: JSON.parse(detalle)
+                detalle: JSON.parse(detalle),
+                cliente: cliente
             })
         );
     } catch (e) {
@@ -1302,6 +1307,17 @@ function generarBotonPago() {
         "https://multimedia.epayco.co/dashboard/btns/btn2.png"
     );
 
+    // Datos de facturación del cliente (pre-llenan el checkout de ePayco)
+    if (cliente.email) {
+        script.setAttribute("data-epayco-email_billing", cliente.email);
+    }
+    if (cliente.nombre) {
+        script.setAttribute("data-epayco-name_billing", cliente.nombre);
+    }
+    if (cliente.telefono) {
+        script.setAttribute("data-epayco-mobilephone_billing", cliente.telefono);
+    }
+
     // Información adicional
 
     script.setAttribute(
@@ -1324,3 +1340,51 @@ function generarBotonPago() {
     );
 
 }
+
+
+// =========================
+// DATOS DEL CLIENTE
+// =========================
+
+function obtenerDatosCliente() {
+
+    const nombreEl = document.getElementById("clienteNombre");
+    const emailEl = document.getElementById("clienteEmail");
+    const telEl = document.getElementById("clienteTelefono");
+
+    return {
+        nombre: nombreEl ? nombreEl.value.trim() : "",
+        email: emailEl ? emailEl.value.trim() : "",
+        telefono: telEl ? telEl.value.trim() : ""
+    };
+
+}
+
+// =========================
+// CONSENTIMIENTO DE DATOS
+// =========================
+
+function guardarConsentimiento() {
+
+    const check = document.getElementById("consentDatos");
+
+    try {
+        localStorage.setItem(
+            "sercafe_consent",
+            check && check.checked ? "si" : "no"
+        );
+    } catch (e) {
+        // localStorage no disponible
+    }
+
+}
+
+// Al cargar la tienda, reflejar el consentimiento previamente guardado.
+document.addEventListener("DOMContentLoaded", () => {
+    const check = document.getElementById("consentDatos");
+    if (check) {
+        try {
+            check.checked = localStorage.getItem("sercafe_consent") === "si";
+        } catch (e) { /* no-op */ }
+    }
+});

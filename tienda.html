@@ -6,6 +6,7 @@
     <title>Ser Café | Tienda</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="Img/logoSC-10.png" type="image/png">
+    <script src="tracking.js"></script>
 </head>
 <body class="n2">
 
@@ -62,6 +63,19 @@
 
         <hr>
 
+        <!-- DATOS DEL CLIENTE -->
+        <div class="datos-cliente">
+            <h3>Tus datos</h3>
+            <input type="text" id="clienteNombre" placeholder="Nombre y apellido"
+                   autocomplete="name" oninput="invalidarPago();">
+            <input type="email" id="clienteEmail" placeholder="Correo electrónico"
+                   autocomplete="email" oninput="invalidarPago();">
+            <input type="tel" id="clienteTelefono" placeholder="Teléfono (WhatsApp)"
+                   autocomplete="tel" oninput="invalidarPago();">
+        </div>
+
+        <hr>
+
         <!-- UBICACIÓN -->
         <div class="ubicacion">
             <h3>Ubicación de entrega</h3>
@@ -94,6 +108,15 @@
                 <span id="totalPagar">$0</span>
             </div>
         </div>
+
+        <!-- CONSENTIMIENTO DE DATOS (Enhanced Conversions) -->
+        <label class="consent-carrito">
+            <input type="checkbox" id="consentDatos" onchange="guardarConsentimiento();">
+            <span>Acepto que Ser Café use mis datos de contacto y la
+            <a href="privacidad.html" target="_blank" rel="noopener">política de privacidad</a>,
+            incluyendo su envío seguro (cifrado) a plataformas de publicidad como Google
+            para medición y mejora de campañas.</span>
+        </label>
 
         <!-- BOTÓN EPAYCO -->
         <div class="pago">
