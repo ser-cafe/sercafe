@@ -23,7 +23,7 @@ window.SERCAFE_TRACKING = {
     // (Opcional) ID de medición de GA4, formato G-XXXXXXXXXX.
     // Déjalo vacío si configuras GA4 directamente dentro de GTM
     // (recomendado). Si lo pones, se carga gtag.js como respaldo.
-    GA4_ID: "",
+    GA4_ID: "G-N2EWTZV8SY",
 
     // ¿Está activado el tracking? Útil para pruebas.
     activo: true
