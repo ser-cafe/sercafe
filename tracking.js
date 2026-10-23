@@ -18,7 +18,7 @@
 // ---------------------------------------------------------
 window.SERCAFE_TRACKING = {
     // ID del contenedor de Google Tag Manager, formato GTM-XXXXXXX
-    GTM_ID: "GTM-XXXXXXX",
+    GTM_ID: "GTM-5DFS8LDJ",
 
     // (Opcional) ID de medición de GA4, formato G-XXXXXXXXXX.
     // Déjalo vacío si configuras GA4 directamente dentro de GTM
