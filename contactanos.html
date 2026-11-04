@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="Img/logoSC-10.png" type="image/png">
     <script src="tracking.js"></script>
+    <script src="i18n.js"></script>
 </head>
 <body class="n2">
     <header>
@@ -15,12 +16,12 @@
         </a>
         <nav>
             <ul>
-                <li><a href="nosotros.html">Nosotros</a></li>
-                <li><a href="perfil.html">Perfil</a></li>
-                <li><a href="contactanos.html">Contáctanos</a></li>
+                <li><a href="nosotros.html" data-i18n="nav_nosotros">Nosotros</a></li>
+                <li><a href="perfil.html" data-i18n="nav_perfil">Perfil</a></li>
+                <li><a href="contactanos.html" data-i18n="nav_contacto">Contáctanos</a></li>
             </ul>
         </nav>
-        <button class="btn-tienda" onclick="window.location.href='tienda.html'">
+        <button class="btn-tienda" data-i18n="btn_comprar" onclick="window.location.href='tienda.html'">
             🛒 Comprar Café
         </button>
     </header>
@@ -29,9 +30,9 @@
     <section class="n2-hero" style="min-height:42vh;">
         <img class="n2-hero-img" src="Img/fincaL.jpeg" alt="Finca Ser Café" fetchpriority="high" decoding="async">
         <div class="n2-hero-overlay">
-            <span class="n2-kicker">Hablemos de café</span>
-            <h1>Contáctanos</h1>
-            <p>¿Tienes dudas o quieres hacer un pedido especial? Escríbenos y te
+            <span class="n2-kicker" data-i18n="cont_kicker">Hablemos de café</span>
+            <h1 data-i18n="cont_h1">Contáctanos</h1>
+            <p data-i18n="cont_p">¿Tienes dudas o quieres hacer un pedido especial? Escríbenos y te
                responderemos lo antes posible.</p>
         </div>
     </section>
@@ -63,34 +64,38 @@
 
         <!-- Columna derecha: formulario propio -->
         <div class="cv2-form-card">
-            <h3>Envíanos un mensaje</h3>
+            <h3 data-i18n="cont_form_h3">Envíanos un mensaje</h3>
 
             <form id="formContacto" novalidate>
                 <div class="cv2-campo">
-                    <label for="nombre">Nombre</label>
+                    <label for="nombre" data-i18n="cont_nombre">Nombre</label>
                     <input type="text" id="nombre" name="nombre" required
+                           data-i18n-attr="placeholder:cont_nombre_ph"
                            placeholder="Tu nombre">
                 </div>
 
                 <div class="cv2-campo">
-                    <label for="correo">Correo electrónico</label>
+                    <label for="correo" data-i18n="cont_correo">Correo electrónico</label>
                     <input type="email" id="correo" name="correo" required
+                           data-i18n-attr="placeholder:cont_correo_ph"
                            placeholder="tucorreo@ejemplo.com">
                 </div>
 
                 <div class="cv2-campo">
-                    <label for="telefono">Teléfono (opcional)</label>
+                    <label for="telefono" data-i18n="cont_tel">Teléfono (opcional)</label>
                     <input type="tel" id="telefono" name="telefono" required
+                           data-i18n-attr="placeholder:cont_tel_ph"
                            placeholder="+57 312...">
                 </div>
 
                 <div class="cv2-campo">
-                    <label for="mensaje">Mensaje</label>
+                    <label for="mensaje" data-i18n="cont_mensaje">Mensaje</label>
                     <textarea id="mensaje" name="mensaje" required
+                              data-i18n-attr="placeholder:cont_mensaje_ph"
                               placeholder="Cuéntanos en qué te podemos ayudar..."></textarea>
                 </div>
 
-                <button type="submit" class="cv2-enviar" id="btnEnviar">
+                <button type="submit" class="cv2-enviar" id="btnEnviar" data-i18n="cont_enviar">
                     Enviar mensaje
                 </button>
 

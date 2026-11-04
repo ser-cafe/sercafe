@@ -187,3 +187,54 @@ window.trackWhatsApp = function (origen) {
         whatsapp_origen: origen || "desconocido"
     });
 };
+
+// Añadir al carrito
+window.trackAddToCart = function (item) {
+    if (!window.SERCAFE_TRACKING.activo) return;
+    item = item || {};
+    window.dataLayer.push({ ecommerce: null });
+    window.dataLayer.push({
+        event: "add_to_cart",
+        ecommerce: {
+            currency: "COP",
+            value: (Number(item.price) || 0) * (Number(item.quantity) || 1),
+            items: [{
+                item_id: String(item.item_id || ""),
+                item_name: item.item_name || "",
+                item_variant: item.item_variant || "",
+                price: Number(item.price) || 0,
+                quantity: Number(item.quantity) || 1
+            }]
+        }
+    });
+};
+
+// Inicio del checkout (clic en "Generar Pago")
+window.trackBeginCheckout = function (pedido) {
+    if (!window.SERCAFE_TRACKING.activo) return;
+    pedido = pedido || {};
+    window.dataLayer.push({ ecommerce: null });
+    window.dataLayer.push({
+        event: "begin_checkout",
+        ecommerce: {
+            currency: "COP",
+            value: Number(pedido.value) || 0,
+            items: pedido.items || []
+        }
+    });
+};
+
+// Ver carrito (al abrir el panel)
+window.trackViewCart = function (pedido) {
+    if (!window.SERCAFE_TRACKING.activo) return;
+    pedido = pedido || {};
+    window.dataLayer.push({ ecommerce: null });
+    window.dataLayer.push({
+        event: "view_cart",
+        ecommerce: {
+            currency: "COP",
+            value: Number(pedido.value) || 0,
+            items: pedido.items || []
+        }
+    });
+};

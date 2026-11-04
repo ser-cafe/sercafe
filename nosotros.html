@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="Img/logoSC-10.png" type="image/png">
     <script src="tracking.js"></script>
+    <script src="i18n.js"></script>
 </head>
 <body class="n2">
     <header>
@@ -15,12 +16,12 @@
         </a>
         <nav>
             <ul>
-                <li><a href="nosotros.html">Nosotros</a></li>
-                <li><a href="perfil.html">Perfil</a></li>
-                <li><a href="contactanos.html">Contáctanos</a></li>
+                <li><a href="nosotros.html" data-i18n="nav_nosotros">Nosotros</a></li>
+                <li><a href="perfil.html" data-i18n="nav_perfil">Perfil</a></li>
+                <li><a href="contactanos.html" data-i18n="nav_contacto">Contáctanos</a></li>
             </ul>
         </nav>
-        <button class="btn-tienda" onclick="window.location.href='tienda.html'">
+        <button class="btn-tienda" data-i18n="btn_comprar" onclick="window.location.href='tienda.html'">
             🛒 Comprar Café
         </button>
     </header>

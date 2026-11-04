@@ -32,7 +32,7 @@ function inyectarFooter() {
                 alt="Ser Café"
                 class="footer-logo">
 
-            <p>Café de especialidad colombiano, desde la Finca Lucitania en Nariño.</p>
+            <p data-i18n="footer_desc">Café de especialidad colombiano, desde la Finca Lucitania en Nariño.</p>
 
             <div class="footer-redes">
                 <a href="${SERCAFE_REDES.facebook}" target="_blank" rel="noopener"
@@ -49,7 +49,7 @@ function inyectarFooter() {
                 </a>
             </div>
 
-            <p class="footer-copy">© ${anio} Ser Café. Todos los derechos reservados.</p>
+            <p class="footer-copy">© ${anio} Ser Café. <span data-i18n="footer_copy">Todos los derechos reservados.</span></p>
 
         </div>
     `;
@@ -177,4 +177,16 @@ document.addEventListener("DOMContentLoaded", () => {
     inyectarBotonWhatsApp();
     iniciarCarruseles();
     rastrearEnlacesWhatsApp();
+
+    // Traducir el footer recién inyectado.
+    if (typeof window.aplicarIdioma === "function") {
+        window.aplicarIdioma();
+    }
+});
+
+// Re-traducir el footer si cambia el idioma.
+document.addEventListener("idiomaCambiado", () => {
+    if (typeof window.aplicarIdioma === "function") {
+        // aplicarIdioma ya recorre todo el documento; nada más que hacer.
+    }
 });

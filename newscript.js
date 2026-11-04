@@ -174,6 +174,14 @@ function abrirCarrito() {
         .getElementById("overlay")
         .classList.add("activo");
 
+    // Seguimiento: ver carrito
+    if (typeof window.trackViewCart === "function" && carrito.length > 0) {
+        window.trackViewCart({
+            value: calcularSubtotal(),
+            items: itemsCarritoGA4()
+        });
+    }
+
 }
 
 
@@ -385,6 +393,11 @@ function renderProductos() {
 
     });
 
+    // Traducir el contenido recién inyectado (molienda, botones).
+    if (typeof window.aplicarIdioma === "function") {
+        window.aplicarIdioma();
+    }
+
 }
 
 
@@ -553,10 +566,34 @@ function agregarAlCarrito(
 
     actualizarResumen();
 
+    // Seguimiento: añadir al carrito
+    if (typeof window.trackAddToCart === "function") {
+        window.trackAddToCart({
+            item_id: producto.id,
+            item_name: producto.nombre + " " + producto.presentacion + "g",
+            item_variant: molienda,
+            price: producto.precio,
+            quantity: cantidad
+        });
+    }
+
     mostrarToast(
         `${producto.nombre} ${producto.presentacion}g agregado al carrito`
     );
 
+}
+
+// Construye la lista de items del carrito en formato GA4.
+function itemsCarritoGA4() {
+    return carrito.map(function (item) {
+        return {
+            item_id: String(item.id),
+            item_name: item.nombre + " " + item.presentacion + "g",
+            item_variant: item.molienda,
+            price: item.precio,
+            quantity: item.cantidad
+        };
+    });
 }
 
 
@@ -610,7 +647,7 @@ function renderCarrito() {
     ) {
 
         contenedor.innerHTML =
-            "<p>Tu carrito está vacío</p>";
+            "<p>" + (typeof window.t === "function" ? window.t("carrito_vacio") : "Tu carrito está vacío") + "</p>";
 
         return;
 
@@ -784,6 +821,8 @@ document.addEventListener(
     "DOMContentLoaded",
     () => {
 
+        cargarDepartamentos();
+
         renderProductos();
 
         renderCarrito();
@@ -792,92 +831,150 @@ document.addEventListener(
 
         actualizarResumen();
 
+        // Si el usuario escribe su ciudad (departamentos sin lista),
+        // recalcular el resumen e invalidar el pago.
+        const municipioInput = document.getElementById("municipioTexto");
+        if (municipioInput) {
+            municipioInput.addEventListener("input", () => {
+                actualizarResumen();
+                invalidarPago();
+            });
+        }
     }
 );
+
+// Al cambiar el idioma, re-renderizar productos/carrito y recargar
+// departamentos para que los placeholders queden traducidos.
+document.addEventListener("idiomaCambiado", () => {
+    if (document.getElementById("contenedorProductos")) {
+        const depActual = document.getElementById("departamento");
+        const valorDep = depActual ? depActual.value : "";
+        cargarDepartamentos();
+        if (depActual) { depActual.value = valorDep; cargarMunicipios(); }
+        renderProductos();
+        renderCarrito();
+        actualizarResumen();
+    }
+});
 
 // =========================
 // MUNICIPIOS
 // =========================
 
+// Lista completa de departamentos de Colombia.
+// Solo Antioquia tiene municipios predefinidos (tarifas de envío
+// específicas); para el resto, el cliente ESCRIBE su ciudad/municipio.
+const departamentosColombia = [
+    "Amazonas", "Antioquia", "Arauca", "Atlántico", "Bolívar", "Boyacá",
+    "Caldas", "Caquetá", "Casanare", "Cauca", "Cesar", "Chocó", "Córdoba",
+    "Cundinamarca", "Bogotá D.C.", "Guainía", "Guaviare", "Huila",
+    "La Guajira", "Magdalena", "Meta", "Nariño", "Norte de Santander",
+    "Putumayo", "Quindío", "Risaralda", "San Andrés y Providencia",
+    "Santander", "Sucre", "Tolima", "Valle del Cauca", "Vaupés", "Vichada"
+];
+
 const municipiosPorDepartamento = {
-
     "Antioquia": [
-
-        "Medellín",
-        "Envigado",
-        "Bello",
-        "La Estrella",
-        "Sabaneta",
-        "Copacabana",
-        "Girardota",
-        "Itagüí",
-        "Rionegro",
-        "Caldas",
-        "Guarne",
-        "Otro"
-
-    ],
-
-    "Otro": [
-
-        "Otro"
-
+        "Medellín", "Envigado", "Bello", "La Estrella", "Sabaneta",
+        "Copacabana", "Girardota", "Itagüí", "Rionegro", "Caldas",
+        "Guarne", "Otro"
     ]
-
 };
 
 // =========================
+// POBLAR DEPARTAMENTOS
+// =========================
+
+function cargarDepartamentos() {
+
+    const select = document.getElementById("departamento");
+    if (!select) return;
+
+    const placeholder = (typeof window.t === "function")
+        ? window.t("carrito_sel_depto")
+        : "Seleccione departamento";
+
+    select.innerHTML = '<option value="">' + placeholder + '</option>';
+
+    departamentosColombia.forEach(dep => {
+        const opt = document.createElement("option");
+        opt.value = dep;
+        opt.textContent = dep;
+        select.appendChild(opt);
+    });
+}
+
+// =========================
 // CARGAR MUNICIPIOS
+//  - Antioquia: lista desplegable (para calcular tarifas de envío).
+//  - Otros departamentos: campo de texto para escribir la ciudad.
 // =========================
 
 function cargarMunicipios() {
 
     const departamento =
-        document.getElementById(
-            "departamento"
-        ).value;
+        document.getElementById("departamento").value;
 
-    const municipioSelect =
-        document.getElementById(
-            "municipio"
-        );
+    const municipioSelect = document.getElementById("municipio");
+    const municipioInput = document.getElementById("municipioTexto");
 
-    municipioSelect.innerHTML =
-        '<option value="">Seleccione municipio</option>';
+    const placeholderSel = (typeof window.t === "function")
+        ? window.t("carrito_sel_muni")
+        : "Seleccione municipio";
+    const placeholderTxt = (typeof window.t === "function")
+        ? window.t("carrito_muni_escribir")
+        : "Escribe tu ciudad / municipio";
 
-    if (
-        municipiosPorDepartamento[
-            departamento
-        ]
-    ) {
+    if (municipiosPorDepartamento[departamento]) {
 
-        municipiosPorDepartamento[
-            departamento
-        ].forEach(
-            municipio => {
+        // Mostrar el select, ocultar el input de texto
+        municipioSelect.style.display = "";
+        municipioSelect.innerHTML = '<option value="">' + placeholderSel + '</option>';
+        municipiosPorDepartamento[departamento].forEach(municipio => {
+            const option = document.createElement("option");
+            option.value = municipio;
+            option.textContent = municipio;
+            municipioSelect.appendChild(option);
+        });
 
-                const option =
-                    document.createElement(
-                        "option"
-                    );
+        if (municipioInput) {
+            municipioInput.style.display = "none";
+            municipioInput.value = "";
+        }
 
-                option.value =
-                    municipio;
+    } else if (departamento) {
 
-                option.textContent =
-                    municipio;
+        // Departamento sin lista: el cliente escribe su ciudad
+        municipioSelect.style.display = "none";
+        municipioSelect.innerHTML = '<option value=""></option>';
+        if (municipioInput) {
+            municipioInput.style.display = "";
+            municipioInput.placeholder = placeholderTxt;
+            municipioInput.value = "";
+        }
 
-                municipioSelect.appendChild(
-                    option
-                );
+    } else {
 
-            }
-        );
-
+        // Sin departamento elegido
+        municipioSelect.style.display = "";
+        municipioSelect.innerHTML = '<option value="">' + placeholderSel + '</option>';
+        if (municipioInput) {
+            municipioInput.style.display = "none";
+            municipioInput.value = "";
+        }
     }
 
     actualizarResumen();
+}
 
+// Obtiene el municipio/ciudad elegido o escrito.
+function obtenerMunicipio() {
+    const sel = document.getElementById("municipio");
+    const txt = document.getElementById("municipioTexto");
+    if (txt && txt.style.display !== "none" && txt.value.trim()) {
+        return txt.value.trim();
+    }
+    return sel ? sel.value : "";
 }
 
 // =========================
@@ -922,10 +1019,7 @@ function calcularEnvio() {
             "departamento"
         ).value;
 
-    const municipio =
-        document.getElementById(
-            "municipio"
-        ).value;
+    const municipio = obtenerMunicipio();
 
     const gratis = [
 
@@ -1086,8 +1180,7 @@ function construirDetallePedido() {
     const departamento =
         document.getElementById("departamento").value;
 
-    const municipio =
-        document.getElementById("municipio").value;
+    const municipio = obtenerMunicipio();
 
     return JSON.stringify({
 
@@ -1149,10 +1242,7 @@ function generarBotonPago() {
             "departamento"
         ).value;
 
-    const municipio =
-        document.getElementById(
-            "municipio"
-        ).value;
+    const municipio = obtenerMunicipio();
 
     if (!departamento) {
 
@@ -1242,6 +1332,14 @@ function generarBotonPago() {
         extra3: municipio
     };
 
+    // Seguimiento: inicio de checkout (clic en Generar Pago)
+    if (typeof window.trackBeginCheckout === "function") {
+        window.trackBeginCheckout({
+            value: total,
+            items: itemsCarritoGA4()
+        });
+    }
+
     mostrarBotonEpayco(datosEpayco, contenedor);
 }
 
@@ -1263,7 +1361,8 @@ function construirBotonEpayco(datos, contenedor) {
     const boton = document.createElement("button");
     boton.type = "button";
     boton.className = "btn-epayco-pagar";
-    boton.innerText = "Pagar $" + (Number(datos.amount) || 0).toLocaleString("es-CO");
+    const etiquetaPagar = (typeof window.t === "function") ? window.t("carrito_pagar") : "Pagar";
+    boton.innerText = etiquetaPagar + " $" + (Number(datos.amount) || 0).toLocaleString("es-CO");
 
     boton.addEventListener("click", function () {
         try {

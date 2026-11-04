@@ -59,35 +59,41 @@
     const refPedido = document.getElementById("refPedido");
     const estadoPago = document.getElementById("estadoPago");
 
-    // Referencia a mostrar (la de ePayco o la del pedido guardado)
-    const referenciaFinal =
-        refPayco || (pedido && pedido.referencia) || "";
+    // Referencia a mostrar: priorizamos NUESTRA referencia legible
+    // (SERCAFE-...) guardada en el pedido, no el ref_payco hexadecimal
+    // interno de ePayco (ej. "c00c1e675184d1421ddaee42").
+    const referenciaPropia = (pedido && pedido.referencia) || "";
+    const referenciaFinal = referenciaPropia || refPayco || "";
 
     if (referenciaFinal) {
         bloqueRef.style.display = "";
         refPedido.innerText = referenciaFinal;
     }
 
+    // Helper de traducción (si i18n.js está cargado)
+    const tr = (typeof window.t === "function") ? window.t : function (k) { return k; };
+
+    // Estos textos los controla este script dinámicamente; quitamos
+    // data-i18n para que aplicarIdioma() no los sobreescriba.
+    if (titulo) titulo.removeAttribute("data-i18n");
+    if (mensaje) mensaje.removeAttribute("data-i18n");
+
     if (estadoAceptado) {
-        titulo.innerText = "¡Tu pago fue aprobado!";
-        mensaje.innerText =
-            "Recibimos tu pago correctamente. Estamos preparando tu café " +
-            "y pronto te contactaremos con los datos del envío. ¡Gracias por elegir Ser Café! ☕";
-        estadoPago.innerText = "Aprobado ✓";
+        titulo.innerText = tr("gr_aprobado");
+        mensaje.innerText = tr("gr_aprobado_msg");
+        estadoPago.innerText = tr("gr_estado_aprobado");
         estadoPago.classList.add("estado-ok");
     } else if (estadoRechazado) {
-        titulo.innerText = "Tu pago no pudo completarse";
-        mensaje.innerText =
-            "No logramos confirmar tu pago. Puedes intentarlo de nuevo desde la tienda " +
-            "o escribirnos por WhatsApp y te ayudamos a finalizar tu compra.";
-        estadoPago.innerText = textoResponse || "Rechazado";
+        titulo.innerText = tr("gr_rechazado");
+        mensaje.innerText = tr("gr_rechazado_msg");
+        estadoPago.innerText = textoResponse || tr("gr_rechazado");
         estadoPago.classList.add("estado-error");
     } else {
         // Sin datos de ePayco (acceso directo) o pago pendiente
         if (textoResponse) {
             estadoPago.innerText = textoResponse;
         } else if (referenciaFinal) {
-            estadoPago.innerText = "En verificación";
+            estadoPago.innerText = tr("gr_verificacion");
         }
     }
 
@@ -126,21 +132,21 @@
             let filas = "";
             filas += `
                 <div class="gracias-fila">
-                    <span>Subtotal</span><span>${pesos(d.subtotal)}</span>
+                    <span>${tr("gr_subtotal")}</span><span>${pesos(d.subtotal)}</span>
                 </div>`;
             filas += `
                 <div class="gracias-fila">
-                    <span>Envío</span><span>${pesos(d.envio)}</span>
+                    <span>${tr("gr_envio")}</span><span>${pesos(d.envio)}</span>
                 </div>`;
             filas += `
                 <div class="gracias-fila gracias-fila-total">
-                    <span>Total</span><span>${pesos(d.total)}</span>
+                    <span>${tr("gr_total")}</span><span>${pesos(d.total)}</span>
                 </div>`;
 
             if (d.departamento || d.municipio) {
                 filas += `
                     <div class="gracias-envio-a">
-                        📍 Envío a: ${[d.municipio, d.departamento].filter(Boolean).join(", ")}
+                        📍 ${tr("gr_envio_a")} ${[d.municipio, d.departamento].filter(Boolean).join(", ")}
                     </div>`;
             }
 

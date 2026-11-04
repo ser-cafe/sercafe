@@ -117,6 +117,28 @@ nav a:hover{
     background-color: var(--color-principal);
 }
 
+/* Botón de idioma (ES / EN) */
+.btn-idioma {
+    background: transparent;
+    color: var(--color-principal);
+    border: 1.5px solid var(--color-principal);
+    border-radius: 999px;
+    width: 42px;
+    height: 36px;
+    font-family: Montserrat, sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    margin-left: 0.6rem;
+    transition: background 0.2s, color 0.2s;
+    flex-shrink: 0;
+}
+
+.btn-idioma:hover {
+    background: var(--color-principal);
+    color: #fff;
+}
+
 .contenedorimg {
     display: flex;
     justify-content: center;
@@ -755,7 +777,8 @@ body{
     margin: 0.5rem 0;
 }
 
-.ubicacion select {
+.ubicacion select,
+.ubicacion input#municipioTexto {
     width: 100%;
     padding: 0.6rem;
     margin-bottom: 0.6rem;
@@ -763,6 +786,11 @@ body{
     border: 1px solid #cbb2d6;
     font-family: Montserrat, sans-serif;
     cursor: pointer;
+    box-sizing: border-box;
+}
+
+.ubicacion input#municipioTexto {
+    cursor: text;
 }
 
 .carrito-panel hr {

@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="Img/logoSC-10.png" type="image/png">
     <script src="tracking.js"></script>
+    <script src="i18n.js"></script>
 </head>
 <body class="n2">
 
@@ -17,12 +18,12 @@
         </a>
         <nav>
             <ul>
-                <li><a href="nosotros.html">Nosotros</a></li>
-                <li><a href="perfil.html">Perfil</a></li>
-                <li><a href="contactanos.html">Contáctanos</a></li>
+                <li><a href="nosotros.html" data-i18n="nav_nosotros">Nosotros</a></li>
+                <li><a href="perfil.html" data-i18n="nav_perfil">Perfil</a></li>
+                <li><a href="contactanos.html" data-i18n="nav_contacto">Contáctanos</a></li>
             </ul>
         </nav>
-        <button class="btn-tienda" onclick="window.location.href='tienda.html'">
+        <button class="btn-tienda" data-i18n="btn_comprar" onclick="window.location.href='tienda.html'">
             🛒 Comprar Café
         </button>
     </header>
@@ -32,9 +33,9 @@
         <img class="n2-hero-img" src="Img/cafe.jpg" alt="Café de especialidad Ser Café"
              loading="eager" decoding="async">
         <div class="n2-hero-overlay">
-            <span class="n2-kicker">Pedido recibido</span>
-            <h1>¡Gracias por tu compra!</h1>
-            <p>Tu pedido de café de especialidad ya está en camino de ser preparado
+            <span class="n2-kicker" data-i18n="gr_kicker">Pedido recibido</span>
+            <h1 data-i18n="gr_h1">¡Gracias por tu compra!</h1>
+            <p data-i18n="gr_p">Tu pedido de café de especialidad ya está en camino de ser preparado
                con todo el cariño desde la finca.</p>
         </div>
     </section>
@@ -46,10 +47,10 @@
             <div class="gracias-card">
                 <div class="gracias-check" aria-hidden="true">✓</div>
 
-                <span class="n2-eyebrow">Confirmación</span>
-                <h2 id="graciasTitulo">¡Tu pedido fue registrado!</h2>
+                <span class="n2-eyebrow" data-i18n="gr_conf">Confirmación</span>
+                <h2 id="graciasTitulo" data-i18n="gr_titulo">¡Tu pedido fue registrado!</h2>
 
-                <p class="gracias-mensaje" id="graciasMensaje">
+                <p class="gracias-mensaje" id="graciasMensaje" data-i18n="gr_mensaje">
                     Hemos recibido tu pedido. En breve recibirás la confirmación de pago y
                     los detalles del envío. ¡Gracias por elegir Ser Café! ☕
                 </p>
@@ -57,30 +58,31 @@
                 <!-- Referencia / estado del pago (se completa con los datos de ePayco) -->
                 <div class="gracias-ref" id="graciasRef" style="display:none;">
                     <div class="gracias-ref-fila">
-                        <span>Referencia:</span>
+                        <span data-i18n="gr_ref">Referencia:</span>
                         <strong id="refPedido">—</strong>
                     </div>
                     <div class="gracias-ref-fila">
-                        <span>Estado:</span>
+                        <span data-i18n="gr_estado">Estado:</span>
                         <strong id="estadoPago">—</strong>
                     </div>
                 </div>
 
                 <!-- Resumen del pedido (se completa desde el carrito guardado) -->
                 <div class="gracias-resumen" id="graciasResumen" style="display:none;">
-                    <h3>Resumen de tu pedido</h3>
+                    <h3 data-i18n="gr_resumen">Resumen de tu pedido</h3>
                     <div id="graciasItems" class="gracias-items"></div>
                     <div class="gracias-totales" id="graciasTotales"></div>
                 </div>
 
                 <div class="gracias-acciones">
-                    <a href="tienda.html" class="n2-btn-primario">Seguir comprando</a>
-                    <a href="index.html" class="n2-btn-secundario">Volver al inicio</a>
+                    <a href="tienda.html" class="n2-btn-primario" data-i18n="gr_seguir">Seguir comprando</a>
+                    <a href="index.html" class="n2-btn-secundario" data-i18n="gr_inicio">Volver al inicio</a>
                 </div>
 
                 <p class="gracias-contacto">
-                    ¿Tienes dudas sobre tu pedido?
-                    <a href="contactanos.html">Contáctanos</a> o escríbenos por WhatsApp.
+                    <span data-i18n="gr_contacto">¿Tienes dudas sobre tu pedido?</span>
+                    <a href="contactanos.html" data-i18n="gr_contacto_link">Contáctanos</a>
+                    <span data-i18n="gr_contacto_fin">o escríbenos por WhatsApp.</span>
                 </p>
             </div>
 
