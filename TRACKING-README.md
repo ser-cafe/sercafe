@@ -10,6 +10,59 @@ configurar tú** en Google Tag Manager (GTM), Google Analytics 4 (GA4) y Google 
 
 ---
 
+## 0. Pendientes actuales (resumen rápido)
+
+| Evento | Estado código | Estado GTM | Dónde se cuenta |
+|---|---|---|---|
+| `generate_lead` | ✅ listo | ✅ configurado | Navegador (GTM) |
+| `whatsapp_click` | ✅ listo | ✅ configurado | Navegador (GTM) |
+| `add_to_cart` | ✅ listo | ⏳ **falta en GTM** | Navegador (GTM / GA4) |
+| `begin_checkout` | ✅ listo | ⏳ **falta en GTM** | Navegador (GTM / GA4) |
+| `view_cart` | ✅ listo | opcional | Navegador (GTM / GA4) |
+| `purchase` | ✅ listo | ✅ en GTM | **Servidor (Apps Script → Google Ads)** |
+
+### Configurar `add_to_cart` y `begin_checkout` en GTM (igual que los que ya funcionan)
+1. **Variables** → crea *Variables de capa de datos* para: `ecommerce.value`,
+   `ecommerce.currency`, `ecommerce.items` (si no las tienes ya).
+2. **Activadores** → *Evento personalizado*:
+   - Nombre del evento: `add_to_cart`
+   - Otro: `begin_checkout`
+3. **Etiquetas** → *GA4 Event*:
+   - Una con Event Name `add_to_cart`, activador el de arriba, y en parámetros
+     del evento mapea `value`, `currency`, `items`.
+   - Otra con Event Name `begin_checkout` igual.
+4. **Publica** el contenedor y verifícalo en *Vista previa* (Preview) de GTM:
+   añade un producto al carrito y da "Generar Pago"; deberías ver ambos eventos.
+
+> Estos dos son **de analítica** (GA4), no conversiones de Ads. Si quisieras,
+> puedes marcarlos como eventos clave en GA4, pero normalmente la conversión de
+> Ads es solo `purchase`.
+
+### Probar `purchase` (viene del SERVIDOR, no del navegador)
+`purchase` NO se cuenta desde GTM/navegador porque ePayco suele volver "en
+verificación". La conversión real la sube el **Apps Script** directo a la API de
+Google Ads (`uploadClickConversions`). Tu etiqueta `purchase` en GTM puede quedar
+para GA4 (analítica), pero la **conversión de Google Ads** la maneja el servidor.
+
+**Para activarlo y probarlo** (en `apps-script-epayco.gs`):
+1. Habilita la **API de Google Ads** y consigue: `developer_token`, `customer_id`
+   (sin guiones), `conversion_action_id` (de tu conversión "Compra") y OAuth
+   (`client_id`, `client_secret`, `refresh_token`).
+2. Ponlos con `guardarSecretos()` y deja `ADS_ACTIVO = "true"`.
+3. Ejecuta desde el editor de Apps Script, en orden:
+   - `probarTokenGoogle()` → debe loguear un token (OAuth OK).
+   - `probarConversionGoogleAds()` → debe devolver **HTTP 200** (conexión OK).
+   - `probarConfirmacionEpaycoAprobada()` → simula una compra aprobada completa:
+     guarda en "Pedidos", envía correos y sube la conversión, **sin tocar ePayco**.
+4. En **Google Ads → Objetivos → Conversiones**, la conversión de prueba aparece
+   en unas horas. En el Apps Script, *Ejecuciones* muestra el `HTTP 200`.
+5. Prueba real: haz una compra; al aprobarse, el webhook sube la conversión sola.
+
+> Mientras `ADS_ACTIVO = "false"`, cada venta igual queda en la hoja **"Pedidos"**.
+> Puedes subir esas filas como *importación de conversiones offline* en Google Ads.
+
+---
+
 ## 1. Lo que ya quedó en el código
 
 - **`tracking.js`** carga GTM (y opcionalmente GA4) y expone tres funciones:

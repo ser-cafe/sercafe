@@ -320,6 +320,71 @@ function separarNombre(nombreCompleto) {
   return { nombre: nombre, apellido: partes.join(" ") };
 }
 
+// ============================================================
+//  PRUEBAS (ejecútalas desde el editor de Apps Script)
+// ============================================================
+
+// 1) Verifica que el OAuth funcione (debe devolver un token largo).
+function probarTokenGoogle() {
+  const token = obtenerAccessTokenGoogle();
+  Logger.log("Access token OK (primeros 20): " + token.substring(0, 20) + "...");
+  return token;
+}
+
+// 2) Sube una conversión de PRUEBA a Google Ads con datos ficticios.
+//    Revisa el registro (Ver > Registros) para ver "HTTP 200" y la
+//    respuesta. En Google Ads la conversión aparece en unas horas.
+//    OJO: usa un orderId único cada vez (Date.now()).
+function probarConversionGoogleAds() {
+  if (prop("ADS_ACTIVO") !== "true") {
+    Logger.log("ADS_ACTIVO no está en 'true'. Ejecuta guardarSecretos() primero.");
+    return;
+  }
+  const resultado = subirConversionGoogleAds({
+    ref: "TEST-" + Date.now(),
+    valor: 1000,
+    moneda: "COP",
+    email: "prueba@sercafe.com",
+    nombre: "Prueba Uno",
+    telefono: "3145825227"
+  });
+  Logger.log("Resultado prueba Google Ads: " + resultado);
+  return resultado;
+}
+
+// 3) Simula una confirmación de ePayco aprobada (sin tocar ePayco).
+//    Útil para probar TODO el flujo: guarda en "Pedidos", envía
+//    correos y sube la conversión. Ajusta el x_amount si quieres.
+function probarConfirmacionEpaycoAprobada() {
+  const e = {
+    parameter: {
+      x_cod_response: "1",
+      x_response_reason_text: "Aprobada (PRUEBA)",
+      x_ref_payco: "TESTREF-" + Date.now(),
+      x_transaction_id: "TESTTX-" + Date.now(),
+      x_amount: "1000",
+      x_currency_code: "COP",
+      x_signature: "",
+      x_customer_email: "prueba@sercafe.com",
+      x_customer_movil: "3145825227",
+      x_customer_name: "Prueba Uno",
+      x_payment_method: "PSE",
+      x_extra1: JSON.stringify({
+        total: 1000,
+        departamento: "Antioquia",
+        municipio: "Medellín",
+        productos: [
+          { id: 1, nombre: "Castillo Sur", presentacion: 250, precio: 1000, molienda: "Media", cantidad: 1 }
+        ]
+      }),
+      x_extra2: "Antioquia",
+      x_extra3: "Medellín"
+    }
+  };
+  const salida = doPost(e);
+  Logger.log("Respuesta doPost: " + salida.getContent());
+}
+
 /* ============================================================
  *  NOTA: las funciones enviarCorreoCliente() y enviarCorreoSerCafe()
  *  son las tuyas (ya existentes en tu proyecto). No se incluyen aquí
