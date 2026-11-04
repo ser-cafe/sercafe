@@ -48,6 +48,8 @@ para GA4 (analítica), pero la **conversión de Google Ads** la maneja el servid
 1. Habilita la **API de Google Ads** y consigue: `developer_token`, `customer_id`
    (sin guiones), `conversion_action_id` (de tu conversión "Compra") y OAuth
    (`client_id`, `client_secret`, `refresh_token`).
+   👉 **Guía paso a paso completa en [`GUIA-GOOGLE-ADS-API.md`](GUIA-GOOGLE-ADS-API.md)**
+   (incluye cómo sacar el refresh token con OAuth Playground).
 2. Ponlos con `guardarSecretos()` y deja `ADS_ACTIVO = "true"`.
 3. Ejecuta desde el editor de Apps Script, en orden:
    - `probarTokenGoogle()` → debe loguear un token (OAuth OK).
