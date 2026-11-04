@@ -297,23 +297,65 @@
         window.aplicarIdioma();
     };
 
-    // Inyecta el botón de idioma en el header
-    function inyectarBotonIdioma() {
+    // Inyecta el botón de idioma JUNTO al logo (dentro del "encuadre" de la
+    // marca) para no alterar los espaciados del header, y el botón hamburguesa
+    // para el menú móvil.
+    function inyectarControlesHeader() {
         const header = document.querySelector("header");
-        if (!header || document.getElementById("btnIdioma")) return;
+        if (!header) return;
 
-        const btn = document.createElement("button");
-        btn.id = "btnIdioma";
-        btn.className = "btn-idioma";
-        btn.type = "button";
-        btn.setAttribute("aria-label", "Cambiar idioma / Change language");
-        btn.textContent = idiomaActual() === "es" ? "EN" : "ES";
-        btn.addEventListener("click", window.cambiarIdioma);
-        header.appendChild(btn);
+        // --- Agrupar logo + botón de idioma en un contenedor .marca ---
+        const logoLink = header.querySelector("a");
+        if (logoLink && !header.querySelector(".marca")) {
+            const marca = document.createElement("div");
+            marca.className = "marca";
+            // Insertar el contenedor donde estaba el logo y mover el logo dentro
+            logoLink.parentNode.insertBefore(marca, logoLink);
+            marca.appendChild(logoLink);
+
+            if (!document.getElementById("btnIdioma")) {
+                const btn = document.createElement("button");
+                btn.id = "btnIdioma";
+                btn.className = "btn-idioma";
+                btn.type = "button";
+                btn.setAttribute("aria-label", "Cambiar idioma / Change language");
+                btn.textContent = idiomaActual() === "es" ? "EN" : "ES";
+                btn.addEventListener("click", window.cambiarIdioma);
+                marca.appendChild(btn);
+            }
+        }
+
+        // --- Botón hamburguesa (solo visible en móvil vía CSS) ---
+        const nav = header.querySelector("nav");
+        if (nav && !document.getElementById("btnMenu")) {
+            const hamb = document.createElement("button");
+            hamb.id = "btnMenu";
+            hamb.className = "btn-menu";
+            hamb.type = "button";
+            hamb.setAttribute("aria-label", "Abrir menú / Open menu");
+            hamb.setAttribute("aria-expanded", "false");
+            hamb.innerHTML = "<span></span><span></span><span></span>";
+            hamb.addEventListener("click", function () {
+                const abierto = nav.classList.toggle("abierto");
+                hamb.classList.toggle("activo", abierto);
+                hamb.setAttribute("aria-expanded", abierto ? "true" : "false");
+            });
+            // Insertar la hamburguesa justo antes del nav
+            nav.parentNode.insertBefore(hamb, nav);
+
+            // Cerrar el menú al tocar un enlace
+            nav.querySelectorAll("a").forEach(function (a) {
+                a.addEventListener("click", function () {
+                    nav.classList.remove("abierto");
+                    hamb.classList.remove("activo");
+                    hamb.setAttribute("aria-expanded", "false");
+                });
+            });
+        }
     }
 
     document.addEventListener("DOMContentLoaded", function () {
-        inyectarBotonIdioma();
+        inyectarControlesHeader();
         window.aplicarIdioma();
     });
 
