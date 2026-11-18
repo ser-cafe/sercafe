@@ -68,9 +68,9 @@
             carrito_subtotal: "Subtotal:",
             carrito_envio: "Envío:",
             carrito_total: "Total:",
-            carrito_consent: "Acepto que Ser Café use mis datos de contacto y la",
+            carrito_consent: "Aceptar",
             carrito_consent_link: "política de privacidad",
-            carrito_consent_fin: ", incluyendo su envío seguro (cifrado) a plataformas de publicidad como Google para medición y mejora de campañas.",
+            carrito_consent_fin: " de Ser Café",
             carrito_generar: "Generar Pago",
             carrito_pagar: "Pagar",
 
@@ -182,9 +182,9 @@
             carrito_subtotal: "Subtotal:",
             carrito_envio: "Shipping:",
             carrito_total: "Total:",
-            carrito_consent: "I agree that Ser Café may use my contact data and the",
+            carrito_consent: "I acept",
             carrito_consent_link: "privacy policy",
-            carrito_consent_fin: ", including its secure (encrypted) transfer to advertising platforms such as Google for measurement and campaign improvement.",
+            carrito_consent_fin: " of Ser Café",
             carrito_generar: "Generate Payment",
             carrito_pagar: "Pay",
 
